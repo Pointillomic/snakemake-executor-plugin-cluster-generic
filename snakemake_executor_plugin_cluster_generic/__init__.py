@@ -148,7 +148,7 @@ class Executor(RemoteExecutor):
             # of the cluster job must run locally (or complains about missing -j).
             env.pop("SNAKEMAKE_PROFILE", None)
 
-            ext_jobid = (
+             = (
                 subprocess.check_output(
                     '{submitcmd} "{jobscript}"'.format(
                         submitcmd=submitcmd, jobscript=jobscript
@@ -168,6 +168,13 @@ class Executor(RemoteExecutor):
 
         if ext_jobid and ext_jobid[0]:
             ext_jobid = ext_jobid[0].strip()
+
+            # updated to parse uge specific jobid info (based on https://github.com/snakemake/snakemake-executor-plugin-cluster-generic/issues/17#issuecomment-2639271987 and https://github.com/lutrarutra/snakemake-executor-plugin-cemm-hpc/blob/107f08affe1e9e6f5a5e2b2247f8c9fe941859a4/snakemake_executor_plugin_cemm_hpc/__init__.py)
+            if (match := re.match(r"Your job (\d+)", ext_jobid)):
+                ext_jobid = match.group(1)
+            else:
+                print(f"Error: Could not parse external job id from string '{ext_jobid}'")
+            
             job_info.external_jobid = ext_jobid
 
             self.external_jobid.update((f, ext_jobid) for f in job.output)
