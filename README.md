@@ -8,4 +8,4 @@ Setup
 
 git clone https://github.com/Pointillomic/snakemake-executor-plugin-cluster-generic.git
 
-conda install -e ./snakemake-executor-plugin-cluster-generic
+pip install -e ./snakemake-executor-plugin-cluster-generic
