@@ -148,7 +148,7 @@ class Executor(RemoteExecutor):
             # of the cluster job must run locally (or complains about missing -j).
             env.pop("SNAKEMAKE_PROFILE", None)
 
-             = (
+            ext_jobid = (
                 subprocess.check_output(
                     '{submitcmd} "{jobscript}"'.format(
                         submitcmd=submitcmd, jobscript=jobscript
